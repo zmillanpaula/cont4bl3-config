@@ -1,0 +1,26 @@
+name: CI con Docker Compose
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: [self]
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Parar docker compose
+        run: docker compose -f docker-compose.yml down
+
+      - name: Eliminar imagenes residuales
+        run: docker image prune -af
+
+      - name: Levantar servicios con Docker Compose
+        run: docker compose -f docker-compose.yml up -d --build
