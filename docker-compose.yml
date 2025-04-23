@@ -25,6 +25,8 @@ services:
       DB_NAME: auth_db
     networks:
       - cont4bl3
+    depends_on:
+      - sqlserver
 
   libro-mayor-service:
     image: gruv22/libro-mayor-service:latest
@@ -38,6 +40,8 @@ services:
       DB_NAME: libro_mayor
     networks:
       - cont4bl3
+    depends_on:
+      - sqlserver
 
   carga-masiva-service:
     image: gruv22/carga-masiva-service:latest
@@ -51,6 +55,8 @@ services:
       DB_NAME: excel_db
     networks:
       - cont4bl3
+    depends_on:
+      - sqlserver
 
   cont4bl3_nginx:
     image: nginx:latest
