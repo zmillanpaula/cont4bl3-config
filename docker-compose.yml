@@ -1,18 +1,4 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    restart: always
-    environment:
-      SA_PASSWORD: Gracia95-
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-    networks:
-      - cont4bl3
-
   auth-service:
     image: gruv22/auth-service:latest
     container_name: auth-service
@@ -25,8 +11,6 @@ services:
       DB_NAME: auth_db
     networks:
       - cont4bl3
-    depends_on:
-      - sqlserver
 
   libro-mayor-service:
     image: gruv22/libro-mayor-service:latest
@@ -40,8 +24,6 @@ services:
       DB_NAME: libro_mayor
     networks:
       - cont4bl3
-    depends_on:
-      - sqlserver
 
   carga-masiva-service:
     image: gruv22/carga-masiva-service:latest
@@ -55,8 +37,6 @@ services:
       DB_NAME: excel_db
     networks:
       - cont4bl3
-    depends_on:
-      - sqlserver
 
   cont4bl3_nginx:
     image: nginx:latest
@@ -73,9 +53,6 @@ services:
       - auth-service
       - libro-mayor-service
       - carga-masiva-service
-
-volumes:
-  sqlserver_data:
 
 networks:
   cont4bl3:
