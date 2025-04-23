@@ -1,8 +1,57 @@
-networks:
-  cont4bl3:
-    external: true
-
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    restart: always
+    environment:
+      SA_PASSWORD: Gracia95-
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - cont4bl3
+
+  auth-service:
+    image: gruv22/auth-service:latest
+    container_name: auth-service
+    restart: always
+    environment:
+      DB_HOST: sqlserver
+      DB_PORT: 1433
+      DB_USERNAME: sa
+      DB_PASSWORD: Gracia95-
+      DB_NAME: auth_db
+    networks:
+      - cont4bl3
+
+  libro-mayor-service:
+    image: gruv22/libro-mayor-service:latest
+    container_name: libro-mayor-service
+    restart: always
+    environment:
+      DB_HOST: sqlserver
+      DB_PORT: 1433
+      DB_USERNAME: sa
+      DB_PASSWORD: Gracia95-
+      DB_NAME: libro_db
+    networks:
+      - cont4bl3
+
+  carga-masiva-service:
+    image: gruv22/carga-masiva-service:latest
+    container_name: carga-masiva-service
+    restart: always
+    environment:
+      DB_HOST: sqlserver
+      DB_PORT: 1433
+      DB_USERNAME: sa
+      DB_PASSWORD: Gracia95-
+      DB_NAME: carga_db
+    networks:
+      - cont4bl3
+
   cont4bl3_nginx:
     image: nginx:latest
     container_name: cont4bl3_nginx
@@ -14,3 +63,14 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
       - cont4bl3
+    depends_on:
+      - auth-service
+      - libro-mayor-service
+      - carga-masiva-service
+
+volumes:
+  sqlserver_data:
+
+networks:
+  cont4bl3:
+    external: true
