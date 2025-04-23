@@ -35,7 +35,7 @@ services:
       DB_PORT: 1433
       DB_USERNAME: sa
       DB_PASSWORD: Gracia95-
-      DB_NAME: libro_db
+      DB_NAME: libro_mayor
     networks:
       - cont4bl3
 
@@ -48,7 +48,7 @@ services:
       DB_PORT: 1433
       DB_USERNAME: sa
       DB_PASSWORD: Gracia95-
-      DB_NAME: carga_db
+      DB_NAME: excel_db
     networks:
       - cont4bl3
 
